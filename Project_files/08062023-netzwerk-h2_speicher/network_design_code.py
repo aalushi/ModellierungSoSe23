@@ -18,6 +18,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from IPython import display
 import seaborn as sns
+import sys
+#import gurobipy
+
+print(sys.version)
+
+
 
 # load in energy profiles
 
@@ -38,14 +44,17 @@ pv_p = pd.read_csv('Wesseling_PV_50.8203_6.9721.csv', skiprows = 3)['electricity
 #pv_p.plot()
 
 heat_load_new = heat_load#.transpose()
+heat_load_new = heat_load_new.drop('Date', axis=1)
 heat_load_new = heat_load_new.stack().reset_index().rename(columns={0:'value'})
-heat_load_new[isinstance(heat_load_new['value'], float)]
-#print(heat_load_new[0:364])
+#heat_load_new = heat_load_new.loc[heat_load_new['value'] == float]
+#print(heat_load_new[][0:364])
 
 #heat_load_new.rename(index = {'Date': 'Uhrzeit'})
 #sns.heatmap(heat_load)
 
+#######################
 ##### Parameters: #####
+#######################
 
 electricity_rate = 0.5 # €/kWh
 pv_infeed = 0.082 # €/kWh
@@ -146,8 +155,8 @@ ref_network.add('Link', name='house_battery_discharge', bus0='battery_bus', bus1
 ref_network.add('Bus', name='heat_bus')
 ref_network.add('Bus', name='heat_storage_bus')
 
-#ref_network.add('Load', name='heat_load', bus='heat_bus', p_set = heat_load_new[1:364])     # heat load for house
-"""
+ref_network.add('Load', name='heat_load', bus='heat_bus', p_set = heat_load_new["value"])     # heat load for house
+
 ref_network.add('Store', name='heat_storage', bus='heat_storage_bus', e_nom = heatstore_params['e_nom_heat_storage'],
                 e_cyclic=True, capital_cost = heatstore_params['capital_cost_heat_storage'],
                marginal_cost = heatstore_params['marginal_cost_heat_storage'],
@@ -157,4 +166,6 @@ ref_network.add('Link', name='heat_pump', bus0='electricity_bus', bus1='heat_bus
                 capital_cost = heatpump_params['capital_cost_heatpump'], marginal_cost = electricity_rate)    # heat pump
 ref_network.add('Link', name='heat_storage_charge', bus0='heat_bus', bus1='heat_storage_bus')    # charge heat storage
 ref_network.add('Link', name='heat_storage_discharge', bus0='heat_storage_bus', bus1='heat_bus') # d
-"""
+
+
+#ref_network.optimize(solver_name = 'gurobi')

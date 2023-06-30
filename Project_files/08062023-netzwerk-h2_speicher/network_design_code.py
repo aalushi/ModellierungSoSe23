@@ -168,4 +168,4 @@ ref_network.add('Link', name='heat_storage_charge', bus0='heat_bus', bus1='heat_
 ref_network.add('Link', name='heat_storage_discharge', bus0='heat_storage_bus', bus1='heat_bus') # d
 
 
-#ref_network.optimize(solver_name = 'gurobi')
+ref_network.optimize(solver_name = 'gurobi')

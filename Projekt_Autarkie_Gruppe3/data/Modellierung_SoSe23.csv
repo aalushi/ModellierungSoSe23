@@ -1,4 +1,4 @@
-﻿Zeit;electric_load;pv;grid_infeed;heat_load;Außentemperatur
+﻿Zeit;electric_load;pv;grid_infeed;heat_load;temp
 01.01. 00:00;0,016247;0;0;0,22;10,7
 01.01. 01:00;0,016162;0;0;0,13;10,77
 01.01. 02:00;0,016005;0;0;0,07;10,55
